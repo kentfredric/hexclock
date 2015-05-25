@@ -1,0 +1,220 @@
+<html>
+<body>
+  <canvas width="600" height="600" id="canvas">
+
+  </canvas>
+  <script type="application/javascript">
+    var canvas = document.getElementById('canvas');
+    var c = canvas.getContext('2d');
+
+    var deg_to_rad = function(deg) {
+        return deg *  ( Math.PI / 180 );
+    };
+    var hex_to_rad = function(hex) {
+        return  (( hex / 255 * 360 ) - 90 ) * ( Math.PI / 180 );
+    };
+    c.get_center = function() {
+      return { 
+        x: canvas.width / 2,
+        y: canvas.height / 2
+      };
+    }
+    c.draw_circle = function(radius, fillcolor, strokecolor ){
+      this.beginPath();
+      var center = this.get_center();
+      this.arc( center.x, center.y, 
+                radius,
+                0, Math.PI * 2 , false );
+      this.strokeStyle = strokecolor;
+      this.fillStyle =
+          "hsl(" + fillcolor.h + "," + fillcolor.s + "," + fillcolor.l + ")";
+      this.stroke();
+      this.fill();
+    };
+    c.draw_hand = function( angle, inner_radius, outer_radius, strokecolor, max_radius ) {
+      var center = this.get_center();
+      var lw = this.lineWidth;
+
+      this.moveTo( center.x, center.y );
+      var a = hex_to_rad( angle );
+      this.beginPath();
+      this.arc( center.x, center.y, inner_radius, a, a, false );
+      this.arc( center.x, center.y, max_radius, a, a, false );
+  
+      this.lineWidth = 2
+      this.strokeStyle = 'rgba(0,0,0,0.1)'; //strokecolor;
+      this.stroke();
+
+      this.moveTo( center.x, center.y );
+      this.beginPath();
+      this.arc( center.x, center.y, inner_radius, a, a, false );
+      this.arc( center.x, center.y, outer_radius, a, a, false );
+      this.lineWidth = 2.5;
+      this.strokeStyle = strokecolor;
+      this.stroke();
+      this.lineWidth = lw;
+    }
+    c.draw_text = function( text, angle, radius ) { 
+      var center = this.get_center();
+      var a = hex_to_rad( angle );
+      var opposite = Math.sin( a ) * radius;
+      var adjacent = Math.cos( a ) * radius;
+      this.fillStyle = "black";
+      this.fillText( text, adjacent + center.x, opposite + center.y );
+      
+    }
+
+    var map_mono = function( H, HB, M, MB ) {
+      var XA = H;
+      var XB = H + HB / 16;
+      var XC = M;
+      var XD = M + MB / 16;
+      var result = { 
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", "l": "50%" },
+        "C": { "s": "80%" },
+        "D": { "s": "70%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XB / 256 * 360 );
+      result.D.h = parseInt( XB / 256 * 360 );
+      result.C.l = parseInt( XC / 256 * 100 ) + "%";
+      result.D.l = parseInt( XD / 256 * 100 ) + "%";
+      result.Atext = "black";
+      result.Btext = "black";
+      result.Ctext = ( XC > 60 ) ? "black" : "white";
+      result.Dtext = ( XC > 60 ) ? "black" : "white";
+      return result;
+    };
+    var map_dichrome = function( H, HB, M, MB ) {
+      var XA = H;
+      var XB = H + HB / 16;
+      var XC = M;
+      var XD = M + MB / 16;
+      var result = { 
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", },
+        "C": { "s": "80%", "l": "50%" },
+        "D": { "s": "70%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XC / 256 * 360 );
+      result.D.h = parseInt( XD / 256 * 360 );
+      result.B.l = parseInt( HB / 256 * 100 ) + "%";
+      result.D.l = parseInt( MB / 256 * 100 ) + "%";
+      result.Atext = "black";
+      result.Btext = ( HB < 60 ) ? "white": "black";
+      result.Ctext = "black";
+      result.Dtext = ( MB < 60 ) ? "white": "black";
+      return result;
+    };
+    var map_polychrome = function( H, HB, M, MB ) {
+      var XA = H + ( HB / 255 ) + ( M / 255 / 255 ) + ( MB / 255 / 255 );
+      var XB = HB + ( M / 255 ) + ( MB / 255 / 255 );
+      var XC = M + ( MB / 255 );
+      var XD = MB;
+      var result = { 
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", "l": "60%" },
+        "C": { "s": "80%", "l": "70%" },
+        "D": { "s": "70%", "l": "80%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XC / 256 * 360 );
+      result.D.h = parseInt( XD / 256 * 360 );
+      result.Atext = "black";
+      result.Btext = "black";
+      result.Ctext = "black";
+      result.Dtext = "black";
+      return result;
+    };
+
+
+
+
+
+    c.draw_clock = function( H, HB, M, MB ) {
+      this.clearRect(0,0,this.canvas.width, this.canvas.height );
+      var p = map_polychrome( H, HB, M, MB );
+
+      this.draw_circle( 250, p.A, p.Atext );
+      this.draw_circle( 200, p.B, p.Btext );
+      this.draw_circle( 150, p.C, p.Ctext );
+      this.draw_circle( 100,  p.D, p.Dtext );
+
+      this.draw_hand( MB, 50, 105 , p.Dtext, 270 );
+      this.draw_hand( M , 100, 155, p.Ctext, 270 );
+      this.draw_hand( HB, 150, 205, p.Btext, 270 );
+      this.draw_hand( H , 200, 255, p.Atext, 270 );
+      this.draw_text( "0", 0, 260 );
+      this.draw_text( "Midnight", 0, 270 );
+      this.draw_text( "1", 1/16 * 256, 260 );
+      this.draw_text( "2", 2/16 * 256, 260 );
+      this.draw_text( "3", 3/16 * 256, 260 );
+      this.draw_text( "4", 4/16 * 256, 260 );
+      this.draw_text( "5", 5/16 * 256, 260 );
+      this.draw_text( "6", 6/16 * 256, 260 );
+      this.draw_text( "7", 7/16 * 256, 260 );
+      this.draw_text( "8", 8/16 * 256, 260 );
+      this.draw_text( "Noon", 8/16 * 256, 270 );
+      this.draw_text( "9", 9/16 * 256, 260 );
+      this.draw_text( "A", 10/16 * 256, 260 );
+      this.draw_text( "B", 11/16 * 256, 260 );
+      this.draw_text( "C", 12/16 * 256, 260 );
+      this.draw_text( "D", 13/16 * 256, 260 );
+      this.draw_text( "E", 14/16 * 256, 260 );
+      this.draw_text( "F", 15/16 * 256, 260 );
+    };
+    var s = 64;
+    var h = 0, m = 0, n = 0, z = 0;
+    var tick_test = function() {
+      z += s;
+      if ( z > 256 ) { 
+        n+= 10;
+        z = 0;
+      }
+      if ( n > 256 ) {
+        m+= s;
+        n = 0;
+      }
+      if ( m > 256 ) {
+        h += 16;
+        m = 0;
+      }
+      if ( h > 256 ) {
+        h = 0;
+      }
+      c.draw_clock( h, m, n, z );
+    };
+
+    var get_bits = function( value, min, size ) { 
+      if ( value < min ){  return 0; }
+      return value / min  % size ;
+    };
+
+    
+    var tick = function() { 
+        var d = new Date(Date.now());
+        var t = ( d.getHours() * 60 * 60 ) + 
+                ( d.getMinutes() * 60 ) + 
+                d.getSeconds() +
+                ( d.getMilliseconds() / 1000 );
+        var secs = t / ( 60 * 60 * 24 ) * ( 256 * 256 * 256 );
+        c.draw_clock(
+          get_bits( secs, 256 * 256 * 16, 16 )/ 16 * 256,
+          get_bits( secs, 256 * 256, 16 )/16 * 256,
+          get_bits( secs, 256 * 16, 16 )/16*256,
+          get_bits( secs, 256, 16 )/16*256
+        );
+    };
+
+    tick();
+    var interval = setInterval( tick, 0.1 );
+    
+  </script>
+</body>
+</html>
+

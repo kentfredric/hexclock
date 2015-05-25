@@ -60,8 +60,16 @@
       var opposite = Math.sin( a ) * radius;
       var adjacent = Math.cos( a ) * radius;
       this.fillStyle = "black";
+      this.font = "10px sans-serif";
       this.fillText( text, adjacent + center.x, opposite + center.y );
-      
+    }
+    c.draw_time = function(text) {
+      var center = this.get_center();
+      this.fillStyle = "black";
+      this.font = "20px sans-serif";
+
+      var metric = this.measureText(text);
+      this.fillText( text , center.x - ( metric.width / 2 ),  center.y + ( 20/3 ));
     }
 
     var map_mono = function( H, HB, M, MB ) {
@@ -133,7 +141,9 @@
     };
 
 
-
+    var as_hex = function( i ) {
+          return parseInt( i / 16 ).toString(16);
+    };
 
 
     c.draw_clock = function( H, HB, M, MB ) {
@@ -169,6 +179,10 @@
       this.draw_text( "D", 13/16 * 256, 260 );
       this.draw_text( "E", 14/16 * 256, 260 );
       this.draw_text( "F", 15/16 * 256, 260 );
+
+      var t = "" + as_hex( H ) + as_hex( HB ) + as_hex( M ) + as_hex( MB );
+      this.draw_time( t );
+
     };
     var s = 64;
     var h = 0, m = 0, n = 0, z = 0;

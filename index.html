@@ -14,7 +14,7 @@
         return  (( hex / 255 * 360 ) - 90 ) * ( Math.PI / 180 );
     };
     c.get_center = function() {
-      return { 
+      return {
         x: canvas.width / 2,
         y: canvas.height / 2
       };
@@ -22,7 +22,7 @@
     c.draw_circle = function(radius, fillcolor, strokecolor ){
       this.beginPath();
       var center = this.get_center();
-      this.arc( center.x, center.y, 
+      this.arc( center.x, center.y,
                 radius,
                 0, Math.PI * 2 , false );
       this.strokeStyle = strokecolor;
@@ -40,7 +40,7 @@
       this.beginPath();
       this.arc( center.x, center.y, inner_radius, a, a, false );
       this.arc( center.x, center.y, max_radius, a, a, false );
-  
+
       this.lineWidth = 2
       this.strokeStyle = 'rgba(0,0,0,0.1)'; //strokecolor;
       this.stroke();
@@ -54,7 +54,7 @@
       this.stroke();
       this.lineWidth = lw;
     }
-    c.draw_text = function( text, angle, radius ) { 
+    c.draw_text = function( text, angle, radius ) {
       var center = this.get_center();
       var a = hex_to_rad( angle );
       var opposite = Math.sin( a ) * radius;
@@ -77,7 +77,7 @@
       var XB = H + HB / 16;
       var XC = M;
       var XD = M + MB / 16;
-      var result = { 
+      var result = {
         "A": { "s": "100%", "l": "50%" },
         "B": { "s": "90%", "l": "50%" },
         "C": { "s": "80%" },
@@ -100,7 +100,7 @@
       var XB = H + HB / 16;
       var XC = M;
       var XD = M + MB / 16;
-      var result = { 
+      var result = {
         "A": { "s": "100%", "l": "50%" },
         "B": { "s": "90%", },
         "C": { "s": "80%", "l": "50%" },
@@ -123,7 +123,7 @@
       var XB = HB + ( M / 255 ) + ( MB / 255 / 255 );
       var XC = M + ( MB / 255 );
       var XD = MB;
-      var result = { 
+      var result = {
         "A": { "s": "100%", "l": "50%" },
         "B": { "s": "90%", "l": "60%" },
         "C": { "s": "80%", "l": "70%" },
@@ -188,7 +188,7 @@
     var h = 0, m = 0, n = 0, z = 0;
     var tick_test = function() {
       z += s;
-      if ( z > 256 ) { 
+      if ( z > 256 ) {
         n+= 10;
         z = 0;
       }
@@ -206,16 +206,16 @@
       c.draw_clock( h, m, n, z );
     };
 
-    var get_bits = function( value, min, size ) { 
+    var get_bits = function( value, min, size ) {
       if ( value < min ){  return 0; }
       return value / min  % size ;
     };
 
-    
-    var tick = function() { 
+
+    var tick = function() {
         var d = new Date(Date.now());
-        var t = ( d.getHours() * 60 * 60 ) + 
-                ( d.getMinutes() * 60 ) + 
+        var t = ( d.getHours() * 60 * 60 ) +
+                ( d.getMinutes() * 60 ) +
                 d.getSeconds() +
                 ( d.getMilliseconds() / 1000 );
         var secs = t / ( 60 * 60 * 24 ) * ( 256 * 256 * 256 );
@@ -229,7 +229,7 @@
 
     tick();
     var interval = setInterval( tick, 0.1 );
-    
+
   </script>
 </body>
 </html>

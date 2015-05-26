@@ -184,10 +184,10 @@
       }
     };
     c.draw_rings = function( theme ) {
-      this.draw_circle( this.rings[0],  theme[0], theme[0].text );
-      this.draw_circle( this.rings[1],  theme[1], theme[1].text );
-      this.draw_circle( this.rings[2],  theme[2], theme[2].text );
-      this.draw_circle( this.rings[3],  theme[3], theme[3].text );
+      var i;
+      for ( i = 0; i < 4 ; i++ ) {
+        this.draw_circle( this.rings[i],  theme[i], theme[i].text );
+      }
       this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme[3].text );
     };
     c.draw_hands = function( theme, hands ) {

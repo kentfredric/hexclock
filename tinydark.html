@@ -29,7 +29,8 @@
         { "s": "100%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)"} ,
         { "s": "90%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
         { "s": "80%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
-        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" }
+        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "h": 0, "s":  "100%", l: "100%", "text": "black", "hand":"black","hair": "rgba(0,0,0,0.1)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
@@ -52,7 +53,8 @@
         { "s": "100%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
         { "s": "90%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
         { "s": "80%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
-        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" }
+        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "h": 0, "s":  "100%", l: "100%", "text": "black", "hand":"black","hair": "rgba(0,0,0,0.1)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
@@ -78,7 +80,8 @@
         { "s": "100%", "l": "50%", "text" : "white", "hand": "white", "hair": "rgba(255,255,255,0.3)" },
         { "s":  "90%", "l": "60%", "text" : "white", "hand": "white", "hair": "rgba(255,255,255,0.3)" },
         { "s":  "80%", "l": "70%", "text" : "white", "hand": "white", "hair": "rgba(255,255,255,0.3)" },
-        { "s":  "70%", "l": "80%", "text" : "white", "hand": "white", "hair": "rgba(255,255,255,0.3)" }
+        { "s":  "70%", "l": "80%", "text" : "white", "hand": "white", "hair": "rgba(255,255,255,0.3)" },
+        { "h": 0, "s":  "100%", l: "100%", "text": "white", "hand":"white","hair": "rgba(255,255,255,0.3)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
@@ -186,10 +189,9 @@
     };
     c.draw_rings = function( theme ) {
       var i;
-      for ( i = 0; i < 4 ; i++ ) {
+      for ( i = 0; i <= 4 ; i++ ) {
         this.draw_circle( this.rings[i],  theme[i], theme[i].text );
       }
-      this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme[3].text );
     };
     c.draw_hands = function( theme, hands ) {
       var i;

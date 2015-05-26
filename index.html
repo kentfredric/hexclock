@@ -88,6 +88,8 @@
 
     c.theme_generator = map_polychrome;
     c.rings           = [ 250, 200, 150, 100, 50 ];
+    c.outer_hairs     = [ 20, 25, 30, 35 ];
+    c.lip_overstep    = 5;
 
 
     c.get_center = function() {
@@ -125,7 +127,7 @@
       this.moveTo( center.x, center.y );
       this.beginPath();
       this.arc( center.x, center.y, inner_radius, a, a, false );
-      this.arc( center.x, center.y, outer_radius, a, a, false );
+      this.arc( center.x, center.y, outer_radius + this.lip_overstep, a, a, false );
       this.lineWidth = 2.5;
       this.strokeStyle = strokecolor;
       this.stroke();
@@ -165,10 +167,10 @@
       this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme.Dtext );
     };
     c.draw_hands = function( theme, hands ) {
-      this.draw_hand( hands[3], this.rings[4], this.rings[3] + 5, theme.Dtext, this.rings[0] + 35 );
-      this.draw_hand( hands[2], this.rings[3], this.rings[2] + 5, theme.Ctext, this.rings[0] + 30 );
-      this.draw_hand( hands[1], this.rings[2], this.rings[1] + 5, theme.Btext, this.rings[0] + 25 );
-      this.draw_hand( hands[0], this.rings[1], this.rings[0] + 5, theme.Atext, this.rings[0] + 20 );
+      this.draw_hand( hands[3], this.rings[4], this.rings[3], theme.Dtext, this.rings[0] + this.outer_hairs[3] );
+      this.draw_hand( hands[2], this.rings[3], this.rings[2], theme.Ctext, this.rings[0] + this.outer_hairs[2] );
+      this.draw_hand( hands[1], this.rings[2], this.rings[1], theme.Btext, this.rings[0] + this.outer_hairs[1] );
+      this.draw_hand( hands[0], this.rings[1], this.rings[0], theme.Atext, this.rings[0] + this.outer_hairs[0] );
     };
 
     c.draw_clock = function( H, HB, M, MB ) {

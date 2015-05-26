@@ -143,7 +143,14 @@
     var as_hex = function( i ) {
           return parseInt( i / 16 ).toString(16);
     };
-
+    c.draw_labels = function() {
+      this.draw_text( "Midnight", 0, 270 );
+      this.draw_text( "Noon", 8/16 * 256, 270 );
+      var i;
+      for ( i = 0; i < 16; i++ ) {
+        this.draw_text( i.toString(16).toUpperCase(), i/16 * 256, 260 );
+      }
+    };
 
     c.draw_clock = function( H, HB, M, MB ) {
       this.clearRect(0,0,this.canvas.width, this.canvas.height );
@@ -160,24 +167,8 @@
       this.draw_hand( M , 100, 155, p.Ctext, 270 );
       this.draw_hand( HB, 150, 205, p.Btext, 270 );
       this.draw_hand( H , 200, 255, p.Atext, 270 );
-      this.draw_text( "0", 0, 260 );
-      this.draw_text( "Midnight", 0, 270 );
-      this.draw_text( "1", 1/16 * 256, 260 );
-      this.draw_text( "2", 2/16 * 256, 260 );
-      this.draw_text( "3", 3/16 * 256, 260 );
-      this.draw_text( "4", 4/16 * 256, 260 );
-      this.draw_text( "5", 5/16 * 256, 260 );
-      this.draw_text( "6", 6/16 * 256, 260 );
-      this.draw_text( "7", 7/16 * 256, 260 );
-      this.draw_text( "8", 8/16 * 256, 260 );
-      this.draw_text( "Noon", 8/16 * 256, 270 );
-      this.draw_text( "9", 9/16 * 256, 260 );
-      this.draw_text( "A", 10/16 * 256, 260 );
-      this.draw_text( "B", 11/16 * 256, 260 );
-      this.draw_text( "C", 12/16 * 256, 260 );
-      this.draw_text( "D", 13/16 * 256, 260 );
-      this.draw_text( "E", 14/16 * 256, 260 );
-      this.draw_text( "F", 15/16 * 256, 260 );
+
+      this.draw_labels();
 
       var t = "" + as_hex( H ) + as_hex( HB ) + as_hex( M ) + as_hex( MB );
       this.draw_time( t );

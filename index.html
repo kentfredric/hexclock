@@ -9,11 +9,30 @@
       display: inline-block;
       margin: 10px;
     }
+    #nerd {
+      float: right;
+      border-left: 3px solid rgba(0,0,0,0.1);
+      min-height: 200px;
+      text-align: left;
+      padding: 5px;
+    }
   </style>
 <body>
   <canvas width="600" height="600" id="canvas">
 
   </canvas>
+  <div id="nerd">
+  <h5> Nerd Modes:</h5>
+  <ul>
+    <li><a href="#test">Seizure Mode</a></li>
+    <li><a href="#">Normal Mode</a></li>
+    <li><a href="#/time/16:00">Fix at 16:00</a></li>
+    <li><a href="#/time/16:30">Fix at 16:30</a></li>
+    <li><a href="#/time/17:30">Fix at 17:30</a></li>
+    <li><a href="#/time/18:00">Fix at 18:00</a></li>
+    <li><a href="#/time/18:30">Fix at 18:30</a></li>
+  </ul>
+  </div>
   <script type="application/javascript">
 (function(){
     var canvas = document.getElementById('canvas');

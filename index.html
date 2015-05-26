@@ -1,5 +1,15 @@
 <html>
   <title>HexClock - A full spectrum experimental clock</title>
+  <style>
+    body {
+      width: auto;
+      text-align: center;
+    }
+    #canvas {
+      display: inline-block;
+      margin: 10px;
+    }
+  </style>
 <body>
   <canvas width="600" height="600" id="canvas">
 
@@ -142,7 +152,7 @@
       this.arc( center.x, center.y, this.rings[ hand_no + 1 ], a, a, false );
       this.arc( center.x, center.y, this.rings[ hand_no ] + this.lip_overstep, a, a, false );
       this.lineWidth = this.hand_width;
-      this.strokeStyle = theme[ hand_no ].text;
+      this.strokeStyle = theme[ hand_no ].hand;
       this.stroke();
       this.lineWidth = lw;
     }
@@ -189,7 +199,7 @@
 
     c.draw_clock = function( H, HB, M, MB ) {
       this.clearRect(0,0,this.canvas.width, this.canvas.height );
-      var p = map_polychrome( H, HB, M, MB );
+      var p = this.theme_generator( H, HB, M, MB );
 
       this.draw_rings( p );
       this.draw_hands( p, [ H, HB, M, MB ]);

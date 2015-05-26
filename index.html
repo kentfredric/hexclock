@@ -182,27 +182,29 @@
       this.draw_time( t );
 
     };
-    var s = 64;
-    var h = 0, m = 0, n = 0, z = 0;
-    var tick_test = function() {
-      z += s;
-      if ( z > 256 ) {
-        n+= 10;
-        z = 0;
-      }
-      if ( n > 256 ) {
-        m+= s;
-        n = 0;
-      }
-      if ( m > 256 ) {
-        h += 16;
-        m = 0;
-      }
-      if ( h > 256 ) {
-        h = 0;
-      }
-      c.draw_clock( h, m, n, z );
-    };
+    var tick_test = (function(){
+      var s = 64;
+      var h = 0, m = 0, n = 0, z = 0;
+      return function() {
+        z += s;
+        if ( z > 256 ) {
+          n+= 10;
+          z = 0;
+        }
+        if ( n > 256 ) {
+          m+= s;
+          n = 0;
+        }
+        if ( m > 256 ) {
+          h += 16;
+          m = 0;
+        }
+        if ( h > 256 ) {
+          h = 0;
+        }
+        c.draw_clock( h, m, n, z );
+      };
+    })();
 
     var get_bits = function( value, min, size ) {
       if ( value < min ){  return 0; }

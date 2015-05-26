@@ -110,9 +110,14 @@
       this.stroke();
       this.fill();
     };
-    c.draw_hand = function( angle, inner_radius, outer_radius, strokecolor, max_radius ) {
+    c.draw_hand = function( angle, hand_no, theme ) {
       var center = this.get_center();
       var lw = this.lineWidth;
+
+      var inner_radius = this.rings[ hand_no + 1 ];
+      var outer_radius = this.rings[ hand_no ] + this.lip_overstep;
+      var max_radius   = this.rings[ 0 ] + this.outer_hairs[ hand_no ];
+      var strokecolor  = theme[ hand_no ].text;
 
       this.moveTo( center.x, center.y );
       var a = hex_to_rad( angle );
@@ -127,7 +132,7 @@
       this.moveTo( center.x, center.y );
       this.beginPath();
       this.arc( center.x, center.y, inner_radius, a, a, false );
-      this.arc( center.x, center.y, outer_radius + this.lip_overstep, a, a, false );
+      this.arc( center.x, center.y, outer_radius, a, a, false );
       this.lineWidth = 2.5;
       this.strokeStyle = strokecolor;
       this.stroke();
@@ -167,10 +172,10 @@
       this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme[3].text );
     };
     c.draw_hands = function( theme, hands ) {
-      this.draw_hand( hands[3], this.rings[4], this.rings[3], theme[3].text, this.rings[0] + this.outer_hairs[3] );
-      this.draw_hand( hands[2], this.rings[3], this.rings[2], theme[2].text, this.rings[0] + this.outer_hairs[2] );
-      this.draw_hand( hands[1], this.rings[2], this.rings[1], theme[1].text, this.rings[0] + this.outer_hairs[1] );
-      this.draw_hand( hands[0], this.rings[1], this.rings[0], theme[0].text, this.rings[0] + this.outer_hairs[0] );
+      var i;
+      for ( i = 3; i >=0; i-- ) {
+        this.draw_hand( hands[i], i, theme );
+      }
     };
 
     c.draw_clock = function( H, HB, M, MB ) {

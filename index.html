@@ -141,7 +141,7 @@
 
 
     var as_hex = function( i ) {
-          return parseInt( i / 16 ).toString(16);
+          return parseInt( i / 16 ).toString(16).toUpperCase();
     };
     c.draw_labels = function() {
       this.draw_text( "Midnight", 0, 270 );

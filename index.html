@@ -14,22 +14,22 @@
       var XB = H + HB / 16;
       var XC = M;
       var XD = M + MB / 16;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", "l": "50%" },
-        "C": { "s": "80%" },
-        "D": { "s": "70%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XB / 256 * 360 );
-      result.D.h = parseInt( XB / 256 * 360 );
-      result.C.l = parseInt( XC / 256 * 100 ) + "%";
-      result.D.l = parseInt( XD / 256 * 100 ) + "%";
-      result.Atext = "black";
-      result.Btext = "black";
-      result.Ctext = ( XC > 60 ) ? "black" : "white";
-      result.Dtext = ( XC > 60 ) ? "black" : "white";
+      var result = [
+        { "s": "100%", "l": "50%" },
+        { "s": "90%", "l": "50%" },
+        { "s": "80%" },
+        { "s": "70%" }
+      ];
+      result[0].h = parseInt( XA / 256 * 360 );
+      result[1].h = parseInt( XB / 256 * 360 );
+      result[2].h = parseInt( XB / 256 * 360 );
+      result[3].h = parseInt( XB / 256 * 360 );
+      result[2].l = parseInt( XC / 256 * 100 ) + "%";
+      result[3].l = parseInt( XD / 256 * 100 ) + "%";
+      result[0].text = "black";
+      result[1].text = "black";
+      result[2].text = ( XC > 60 ) ? "black" : "white";
+      result[3].text = ( XC > 60 ) ? "black" : "white";
       return result;
     };
     var map_dichrome = function( H, HB, M, MB ) {
@@ -37,22 +37,22 @@
       var XB = H + HB / 16;
       var XC = M;
       var XD = M + MB / 16;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", },
-        "C": { "s": "80%", "l": "50%" },
-        "D": { "s": "70%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XC / 256 * 360 );
-      result.D.h = parseInt( XD / 256 * 360 );
-      result.B.l = parseInt( HB / 256 * 100 ) + "%";
-      result.D.l = parseInt( MB / 256 * 100 ) + "%";
-      result.Atext = "black";
-      result.Btext = ( HB < 60 ) ? "white": "black";
-      result.Ctext = "black";
-      result.Dtext = ( MB < 60 ) ? "white": "black";
+      var result = [
+        { "s": "100%", "l": "50%" },
+        { "s": "90%", },
+        { "s": "80%", "l": "50%" },
+        { "s": "70%" }
+      ];
+      result[0].h = parseInt( XA / 256 * 360 );
+      result[1].h = parseInt( XB / 256 * 360 );
+      result[2].h = parseInt( XC / 256 * 360 );
+      result[3].h = parseInt( XD / 256 * 360 );
+      result[1].l = parseInt( HB / 256 * 100 ) + "%";
+      result[3].l = parseInt( MB / 256 * 100 ) + "%";
+      result[0].text = "black";
+      result[1].text = ( HB < 60 ) ? "white": "black";
+      result[2].text = "black";
+      result[3].text = ( MB < 60 ) ? "white": "black";
       return result;
     };
 
@@ -61,20 +61,20 @@
       var XB = HB + ( M / 255 ) + ( MB / 255 / 255 );
       var XC = M + ( MB / 255 );
       var XD = MB;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", "l": "60%" },
-        "C": { "s": "80%", "l": "70%" },
-        "D": { "s": "70%", "l": "80%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XC / 256 * 360 );
-      result.D.h = parseInt( XD / 256 * 360 );
-      result.Atext = "black";
-      result.Btext = "black";
-      result.Ctext = "black";
-      result.Dtext = "black";
+      var result = [
+        { "s": "100%", "l": "50%" },
+        { "s": "90%", "l": "60%" },
+        { "s": "80%", "l": "70%" },
+        { "s": "70%", "l": "80%" }
+      ];
+      result[0].h = parseInt( XA / 256 * 360 );
+      result[1].h = parseInt( XB / 256 * 360 );
+      result[2].h = parseInt( XC / 256 * 360 );
+      result[3].h = parseInt( XD / 256 * 360 );
+      result[0].text = "black";
+      result[1].text = "black";
+      result[2].text = "black";
+      result[3].text = "black";
       return result;
     };
 
@@ -160,17 +160,17 @@
       }
     };
     c.draw_rings = function( theme ) {
-      this.draw_circle( this.rings[0],  theme.A, theme.Atext );
-      this.draw_circle( this.rings[1],  theme.B, theme.Btext );
-      this.draw_circle( this.rings[2],  theme.C, theme.Ctext );
-      this.draw_circle( this.rings[3],  theme.D, theme.Dtext );
-      this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme.Dtext );
+      this.draw_circle( this.rings[0],  theme[0], theme[0].text );
+      this.draw_circle( this.rings[1],  theme[1], theme[1].text );
+      this.draw_circle( this.rings[2],  theme[2], theme[2].text );
+      this.draw_circle( this.rings[3],  theme[3], theme[3].text );
+      this.draw_circle( this.rings[4],  { h: 0, s: "100%", l:  "100%" }, theme[3].text );
     };
     c.draw_hands = function( theme, hands ) {
-      this.draw_hand( hands[3], this.rings[4], this.rings[3], theme.Dtext, this.rings[0] + this.outer_hairs[3] );
-      this.draw_hand( hands[2], this.rings[3], this.rings[2], theme.Ctext, this.rings[0] + this.outer_hairs[2] );
-      this.draw_hand( hands[1], this.rings[2], this.rings[1], theme.Btext, this.rings[0] + this.outer_hairs[1] );
-      this.draw_hand( hands[0], this.rings[1], this.rings[0], theme.Atext, this.rings[0] + this.outer_hairs[0] );
+      this.draw_hand( hands[3], this.rings[4], this.rings[3], theme[3].text, this.rings[0] + this.outer_hairs[3] );
+      this.draw_hand( hands[2], this.rings[3], this.rings[2], theme[2].text, this.rings[0] + this.outer_hairs[2] );
+      this.draw_hand( hands[1], this.rings[2], this.rings[1], theme[1].text, this.rings[0] + this.outer_hairs[1] );
+      this.draw_hand( hands[0], this.rings[1], this.rings[0], theme[0].text, this.rings[0] + this.outer_hairs[0] );
     };
 
     c.draw_clock = function( H, HB, M, MB ) {

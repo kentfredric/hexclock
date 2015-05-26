@@ -9,9 +9,83 @@
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
 
+    var map_mono = function( H, HB, M, MB ) {
+      var XA = H;
+      var XB = H + HB / 16;
+      var XC = M;
+      var XD = M + MB / 16;
+      var result = {
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", "l": "50%" },
+        "C": { "s": "80%" },
+        "D": { "s": "70%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XB / 256 * 360 );
+      result.D.h = parseInt( XB / 256 * 360 );
+      result.C.l = parseInt( XC / 256 * 100 ) + "%";
+      result.D.l = parseInt( XD / 256 * 100 ) + "%";
+      result.Atext = "black";
+      result.Btext = "black";
+      result.Ctext = ( XC > 60 ) ? "black" : "white";
+      result.Dtext = ( XC > 60 ) ? "black" : "white";
+      return result;
+    };
+    var map_dichrome = function( H, HB, M, MB ) {
+      var XA = H;
+      var XB = H + HB / 16;
+      var XC = M;
+      var XD = M + MB / 16;
+      var result = {
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", },
+        "C": { "s": "80%", "l": "50%" },
+        "D": { "s": "70%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XC / 256 * 360 );
+      result.D.h = parseInt( XD / 256 * 360 );
+      result.B.l = parseInt( HB / 256 * 100 ) + "%";
+      result.D.l = parseInt( MB / 256 * 100 ) + "%";
+      result.Atext = "black";
+      result.Btext = ( HB < 60 ) ? "white": "black";
+      result.Ctext = "black";
+      result.Dtext = ( MB < 60 ) ? "white": "black";
+      return result;
+    };
+
+    var map_polychrome = function( H, HB, M, MB ) {
+      var XA = H + ( HB / 255 ) + ( M / 255 / 255 ) + ( MB / 255 / 255 );
+      var XB = HB + ( M / 255 ) + ( MB / 255 / 255 );
+      var XC = M + ( MB / 255 );
+      var XD = MB;
+      var result = {
+        "A": { "s": "100%", "l": "50%" },
+        "B": { "s": "90%", "l": "60%" },
+        "C": { "s": "80%", "l": "70%" },
+        "D": { "s": "70%", "l": "80%" }
+      };
+      result.A.h = parseInt( XA / 256 * 360 );
+      result.B.h = parseInt( XB / 256 * 360 );
+      result.C.h = parseInt( XC / 256 * 360 );
+      result.D.h = parseInt( XD / 256 * 360 );
+      result.Atext = "black";
+      result.Btext = "black";
+      result.Ctext = "black";
+      result.Dtext = "black";
+      return result;
+    };
+
     var hex_to_rad = function(hex) {
         return  (( hex / 255 * 360 ) - 90 ) * ( Math.PI / 180 );
     };
+
+    var as_hex = function( i ) {
+          return parseInt( i / 16 ).toString(16).toUpperCase();
+    };
+
     c.get_center = function() {
       return {
         x: canvas.width / 2,
@@ -71,78 +145,9 @@
       this.fillText( text , center.x - ( metric.width / 2 ),  center.y + ( 20/3 ));
     }
 
-    var map_mono = function( H, HB, M, MB ) {
-      var XA = H;
-      var XB = H + HB / 16;
-      var XC = M;
-      var XD = M + MB / 16;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", "l": "50%" },
-        "C": { "s": "80%" },
-        "D": { "s": "70%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XB / 256 * 360 );
-      result.D.h = parseInt( XB / 256 * 360 );
-      result.C.l = parseInt( XC / 256 * 100 ) + "%";
-      result.D.l = parseInt( XD / 256 * 100 ) + "%";
-      result.Atext = "black";
-      result.Btext = "black";
-      result.Ctext = ( XC > 60 ) ? "black" : "white";
-      result.Dtext = ( XC > 60 ) ? "black" : "white";
-      return result;
-    };
-    var map_dichrome = function( H, HB, M, MB ) {
-      var XA = H;
-      var XB = H + HB / 16;
-      var XC = M;
-      var XD = M + MB / 16;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", },
-        "C": { "s": "80%", "l": "50%" },
-        "D": { "s": "70%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XC / 256 * 360 );
-      result.D.h = parseInt( XD / 256 * 360 );
-      result.B.l = parseInt( HB / 256 * 100 ) + "%";
-      result.D.l = parseInt( MB / 256 * 100 ) + "%";
-      result.Atext = "black";
-      result.Btext = ( HB < 60 ) ? "white": "black";
-      result.Ctext = "black";
-      result.Dtext = ( MB < 60 ) ? "white": "black";
-      return result;
-    };
-    var map_polychrome = function( H, HB, M, MB ) {
-      var XA = H + ( HB / 255 ) + ( M / 255 / 255 ) + ( MB / 255 / 255 );
-      var XB = HB + ( M / 255 ) + ( MB / 255 / 255 );
-      var XC = M + ( MB / 255 );
-      var XD = MB;
-      var result = {
-        "A": { "s": "100%", "l": "50%" },
-        "B": { "s": "90%", "l": "60%" },
-        "C": { "s": "80%", "l": "70%" },
-        "D": { "s": "70%", "l": "80%" }
-      };
-      result.A.h = parseInt( XA / 256 * 360 );
-      result.B.h = parseInt( XB / 256 * 360 );
-      result.C.h = parseInt( XC / 256 * 360 );
-      result.D.h = parseInt( XD / 256 * 360 );
-      result.Atext = "black";
-      result.Btext = "black";
-      result.Ctext = "black";
-      result.Dtext = "black";
-      return result;
-    };
 
 
-    var as_hex = function( i ) {
-          return parseInt( i / 16 ).toString(16).toUpperCase();
-    };
+
     c.draw_labels = function( radius ) {
       this.draw_text( "Midnight", 0,          radius + 10 );
       this.draw_text( "Noon",     8/16 * 256, radius + 10 );

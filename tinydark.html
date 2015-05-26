@@ -257,8 +257,33 @@
         );
     };
 
-    tick();
-    var interval = setInterval( tick, 0.1 );
+    var tick_dispatch = function() {
+      var hashpos = document.location.href.indexOf("#");
+      if ( !hashpos ){
+        return tick();
+      }
+      var hash = document.location.href.substr( hashpos + 1 );
+      if ( hash == "test" ) {
+        return tick_test();
+      }
+      var matches = hash.match( /^\/time\/([^:]*):([^:]*)/  )
+      if ( matches ) {
+        var t =  ( matches[1]  * 60 * 60 ) +
+                ( matches[2] * 60 );
+        var secs = t / ( 60 * 60 * 24 ) * ( 256 * 256 * 256 );
+        c.draw_clock(
+          get_bits( secs, 256 * 256 * 16, 16 )/ 16 * 256,
+          get_bits( secs, 256 * 256, 16 )/16 * 256,
+          get_bits( secs, 256 * 16, 16 )/16*256,
+          get_bits( secs, 256, 16 )/16*256
+        );
+        return;
+      }
+      return tick();
+    };
+
+    tick_dispatch();
+    var interval = setInterval( tick_dispatch, 0.1 );
 })();
   </script>
 </body>

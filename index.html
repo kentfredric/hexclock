@@ -143,12 +143,12 @@
     var as_hex = function( i ) {
           return parseInt( i / 16 ).toString(16).toUpperCase();
     };
-    c.draw_labels = function() {
-      this.draw_text( "Midnight", 0, 270 );
-      this.draw_text( "Noon", 8/16 * 256, 270 );
+    c.draw_labels = function( radius ) {
+      this.draw_text( "Midnight", 0,          radius + 10 );
+      this.draw_text( "Noon",     8/16 * 256, radius + 10 );
       var i;
       for ( i = 0; i < 16; i++ ) {
-        this.draw_text( i.toString(16).toUpperCase(), i/16 * 256, 260 );
+        this.draw_text( i.toString(16).toUpperCase(), i/16 * 256, radius );
       }
     };
 
@@ -168,7 +168,7 @@
       this.draw_hand( HB, 150, 205, p.Btext, 270 );
       this.draw_hand( H , 200, 255, p.Atext, 270 );
 
-      this.draw_labels();
+      this.draw_labels( 260 );
 
       var t = "" + as_hex( H ) + as_hex( HB ) + as_hex( M ) + as_hex( MB );
       this.draw_time( t );

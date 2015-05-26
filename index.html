@@ -90,6 +90,18 @@
     c.lip_overstep    = 5;
     c.hand_width      = 2.5;
     c.hair_width      = 2;
+    c.fonts           = {
+      label: {
+        size:  11,
+        style: "sans-serif",
+        color: "black"
+      },
+      clock: {
+        size: 25,
+        style: "sans-serif",
+        color: "black"
+      }
+    };
 
 
     c.get_center = function() {
@@ -137,27 +149,28 @@
     c.draw_text = function( text, angle, radius ) {
       var center = this.get_center();
       var a = hex_to_rad( angle );
-      var opposite = Math.sin( a ) * radius;
-      var adjacent = Math.cos( a ) * radius;
-      this.fillStyle = "black";
-      this.font = "10px sans-serif";
+      this.fillStyle = this.fonts.label.color;
+      this.font = this.fonts.label.size + "px " + this.fonts.label.style;
+
+      var opposite = Math.sin( a ) * ( radius + this.fonts.label.size );
+      var adjacent = Math.cos( a ) * ( radius + this.fonts.label.size );
+
       this.fillText( text, adjacent + center.x, opposite + center.y );
     }
     c.draw_time = function(text) {
       var center = this.get_center();
-      this.fillStyle = "black";
-      this.font = "20px sans-serif";
-
+      this.fillStyle = this.fonts.clock.color;
+      this.font = this.fonts.clock.size + "px " + this.fonts.clock.style;
       var metric = this.measureText(text);
-      this.fillText( text , center.x - ( metric.width / 2 ),  center.y + ( 20/3 ));
+      this.fillText( text , center.x - ( metric.width / 2 ),  center.y + ( this.fonts.clock.size/3 ));
     }
 
     c.draw_labels = function() {
-      this.draw_text( "Midnight", 0,          this.rings[0] + 20 );
-      this.draw_text( "Noon",     8/16 * 256, this.rings[0] + 20 );
+      this.draw_text( "Midnight", 0,          this.rings[0] + this.fonts.label.size );
+      this.draw_text( "Noon",     8/16 * 256, this.rings[0] + this.fonts.label.size );
       var i;
       for ( i = 0; i < 16; i++ ) {
-        this.draw_text( i.toString(16).toUpperCase(), i/16 * 256, this.rings[0] + 10 );
+        this.draw_text( i.toString(16).toUpperCase(), i/16 * 256, this.rings[0] );
       }
     };
     c.draw_rings = function( theme ) {

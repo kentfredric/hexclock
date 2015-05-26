@@ -4,6 +4,7 @@
 
   </canvas>
   <script type="application/javascript">
+(function(){
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
 
@@ -226,7 +227,7 @@
 
     tick();
     var interval = setInterval( tick, 0.1 );
-
+})();
   </script>
 </body>
 </html>

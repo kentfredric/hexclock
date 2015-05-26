@@ -15,10 +15,10 @@
       var XC = M;
       var XD = M + MB / 16;
       var result = [
-        { "s": "100%", "l": "50%" },
-        { "s": "90%", "l": "50%" },
-        { "s": "80%" },
-        { "s": "70%" }
+        { "s": "100%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)"} ,
+        { "s": "90%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "s": "80%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
@@ -26,10 +26,10 @@
       result[3].h = parseInt( XB / 256 * 360 );
       result[2].l = parseInt( XC / 256 * 100 ) + "%";
       result[3].l = parseInt( XD / 256 * 100 ) + "%";
-      result[0].text = "black";
-      result[1].text = "black";
-      result[2].text = ( XC > 60 ) ? "black" : "white";
-      result[3].text = ( XC > 60 ) ? "black" : "white";
+      if ( XC < 60 ) {
+        result[2].text = result[2].hand = "white";
+        result[3].text = result[3].hand = "white";
+      }
       return result;
     };
     var map_dichrome = function( H, HB, M, MB ) {
@@ -38,10 +38,10 @@
       var XC = M;
       var XD = M + MB / 16;
       var result = [
-        { "s": "100%", "l": "50%" },
-        { "s": "90%", },
-        { "s": "80%", "l": "50%" },
-        { "s": "70%" }
+        { "s": "100%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "s": "90%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "s": "80%", "l": "50%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" },
+        { "s": "70%", "text": "black", "hand":"black","hair":"rgba(0,0,0,0.1)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
@@ -49,10 +49,12 @@
       result[3].h = parseInt( XD / 256 * 360 );
       result[1].l = parseInt( HB / 256 * 100 ) + "%";
       result[3].l = parseInt( MB / 256 * 100 ) + "%";
-      result[0].text = "black";
-      result[1].text = ( HB < 60 ) ? "white": "black";
-      result[2].text = "black";
-      result[3].text = ( MB < 60 ) ? "white": "black";
+      if ( HB < 60 ) {
+        result[1].text = result[1].hand = "white";
+      }
+      if ( MB < 60 ) {
+        result[3].text = result[3].hand = "white";
+      }
       return result;
     };
 
@@ -62,19 +64,15 @@
       var XC = M + ( MB / 255 );
       var XD = MB;
       var result = [
-        { "s": "100%", "l": "50%" },
-        { "s": "90%", "l": "60%" },
-        { "s": "80%", "l": "70%" },
-        { "s": "70%", "l": "80%" }
+        { "s": "100%", "l": "50%", "text" : "black", "hand": "black", "hair": "rgba(0,0,0,0.1)" },
+        { "s":  "90%", "l": "60%", "text" : "black", "hand": "black", "hair": "rgba(0,0,0,0.1)" },
+        { "s":  "80%", "l": "70%", "text" : "black", "hand": "black", "hair": "rgba(0,0,0,0.1)" },
+        { "s":  "70%", "l": "80%", "text" : "black", "hand": "black", "hair": "rgba(0,0,0,0.1)" }
       ];
       result[0].h = parseInt( XA / 256 * 360 );
       result[1].h = parseInt( XB / 256 * 360 );
       result[2].h = parseInt( XC / 256 * 360 );
       result[3].h = parseInt( XD / 256 * 360 );
-      result[0].text = "black";
-      result[1].text = "black";
-      result[2].text = "black";
-      result[3].text = "black";
       return result;
     };
 
@@ -90,6 +88,8 @@
     c.rings           = [ 250, 200, 150, 100, 50 ];
     c.outer_hairs     = [ 20, 25, 30, 35 ];
     c.lip_overstep    = 5;
+    c.hand_width      = 2.5;
+    c.hair_width      = 2;
 
 
     c.get_center = function() {
@@ -114,27 +114,23 @@
       var center = this.get_center();
       var lw = this.lineWidth;
 
-      var inner_radius = this.rings[ hand_no + 1 ];
-      var outer_radius = this.rings[ hand_no ] + this.lip_overstep;
-      var max_radius   = this.rings[ 0 ] + this.outer_hairs[ hand_no ];
-      var strokecolor  = theme[ hand_no ].text;
 
       this.moveTo( center.x, center.y );
       var a = hex_to_rad( angle );
       this.beginPath();
-      this.arc( center.x, center.y, inner_radius, a, a, false );
-      this.arc( center.x, center.y, max_radius, a, a, false );
+      this.arc( center.x, center.y, this.rings[ hand_no + 1  ], a, a, false );
+      this.arc( center.x, center.y, this.rings[ 0 ] + this.outer_hairs[ hand_no ], a, a, false );
 
-      this.lineWidth = 2
-      this.strokeStyle = 'rgba(0,0,0,0.1)'; //strokecolor;
+      this.lineWidth   =  this.hair_width;
+      this.strokeStyle = theme[ hand_no ].hair;
       this.stroke();
 
       this.moveTo( center.x, center.y );
       this.beginPath();
-      this.arc( center.x, center.y, inner_radius, a, a, false );
-      this.arc( center.x, center.y, outer_radius, a, a, false );
-      this.lineWidth = 2.5;
-      this.strokeStyle = strokecolor;
+      this.arc( center.x, center.y, this.rings[ hand_no + 1 ], a, a, false );
+      this.arc( center.x, center.y, this.rings[ hand_no ] + this.lip_overstep, a, a, false );
+      this.lineWidth = this.hand_width;
+      this.strokeStyle = theme[ hand_no ].text;
       this.stroke();
       this.lineWidth = lw;
     }

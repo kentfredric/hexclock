@@ -7,9 +7,6 @@
     var canvas = document.getElementById('canvas');
     var c = canvas.getContext('2d');
 
-    var deg_to_rad = function(deg) {
-        return deg *  ( Math.PI / 180 );
-    };
     var hex_to_rad = function(hex) {
         return  (( hex / 255 * 360 ) - 90 ) * ( Math.PI / 180 );
     };

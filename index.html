@@ -4,6 +4,7 @@
     body {
       width: auto;
       text-align: center;
+      font-family: sans-serif;
     }
     #canvas {
       display: inline-block;
@@ -15,6 +16,22 @@
       min-height: 200px;
       text-align: left;
       padding: 5px;
+    }
+    a[x-bind] {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    a:hover {
+      color: red;
+    }
+    ul {
+      padding: 0px;
+      margin: 0px;
+    }
+    li {
+      padding: 0px;
+      margin: 0px;
+      list-style-type: none;
     }
   </style>
 <body>
@@ -31,6 +48,12 @@
     <li><a href="#/time/17:30">Fix at 17:30</a></li>
     <li><a href="#/time/18:00">Fix at 18:00</a></li>
     <li><a href="#/time/18:30">Fix at 18:30</a></li>
+  </ul>
+  <h5> Colour Schemes:</h5>
+  <ul>
+    <li><a x-bind="set_scheme/polychrome">Polychromatic</a></li>
+    <li><a x-bind="set_scheme/dichrome">Dichromatic</a></li>
+    <li><a x-bind="set_scheme/mono">Monochromatic</a></li>
   </ul>
   </div>
   <script type="application/javascript">
@@ -302,6 +325,33 @@
 
     tick_dispatch();
     var interval = setInterval( tick_dispatch, 0.1 );
+
+    var bind_values = {
+      set_scheme: {
+        mono: function() {
+          c.theme_generator = map_mono;
+        },
+        dichrome: function() {
+          c.theme_generator = map_dichrome;
+        },
+        polychrome: function() {
+          c.theme_generator = map_polychrome;
+        },
+      },
+    };
+
+    var matches = document.querySelectorAll("[x-bind]");
+    Array.prototype.forEach.call(matches,function(match) {
+      Array.prototype.forEach.call(match.attributes,function(attribute) {
+        if ( attribute.name == 'x-bind' ) {
+          var binding = attribute.value.split(/\//);
+          var fn = bind_values[ binding[0] ][ binding[1]];
+          if ( fn ) {
+            match.addEventListener('click',fn );
+          }
+        }
+      });
+    });
 })();
   </script>
 </body>
